@@ -5,6 +5,8 @@ import (
 	"io"
 )
 
+var ErrUnknownImageType = errors.New("unknown image type")
+
 func ParseRes(r io.Reader, content string) (int, int, error) {
 	switch content {
 	case "gif":
@@ -18,8 +20,8 @@ func ParseRes(r io.Reader, content string) (int, int, error) {
 	case "webpll":
 		return parseWebP(r)
 	case "svg":
-		return 0, 0, nil
+		return parseSVG(r)
 	default:
-		return 0, 0, errors.New("Unknown content type.")
+		return 0, 0, ErrUnknownImageType
 	}
 }
