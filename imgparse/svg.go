@@ -30,20 +30,20 @@ func parseSVG(r io.Reader) (width int, height int, err error) {
 		switch v := to.(type) {
 		case xml.StartElement:
 			if strings.EqualFold(v.Name.Local, `svg`) {
-				var found int
+				var foundW, foundH bool
 				for _, attr := range v.Attr {
-					if strings.EqualFold(attr.Name.Local, `width`) {
+					if !foundW && strings.EqualFold(attr.Name.Local, `width`) {
 						width, _ = parseWidthOrHeight(attr.Value)
-						found++
-						if found > 1 {
+						foundW = true
+						if foundW && foundH {
 							return
 						}
 						continue
 					}
-					if strings.EqualFold(attr.Name.Local, `height`) {
+					if !foundH && strings.EqualFold(attr.Name.Local, `height`) {
 						height, _ = parseWidthOrHeight(attr.Value)
-						found++
-						if found > 1 {
+						foundH = true
+						if foundW && foundH {
 							return
 						}
 						continue
