@@ -1,10 +1,15 @@
-package imgparse
+package avif
 
 import (
 	"io"
 
+	"github.com/coscms/go-imgparse/imgparse"
 	"github.com/gen2brain/avif"
 )
+
+func init() {
+	imgparse.Register("avif", parseAVIF)
+}
 
 func parseAVIF(r io.Reader) (int, int, error) {
 	cfg, err := avif.DecodeConfig(r)

@@ -14,8 +14,6 @@ var parsers = map[string]func(io.Reader) (int, int, error){
 	"webp":   parseWebP,
 	"svg":    parseSVG,
 	"webpll": parseWebP,
-	"avif":   parseAVIF,
-	"heic":   parseHEIC,
 	"tiff":   parseTIFF,
 	"bmp":    parseBMP,
 }
