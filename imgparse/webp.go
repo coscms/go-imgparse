@@ -3,6 +3,8 @@ package imgparse
 import (
 	"errors"
 	"io"
+
+	"golang.org/x/image/webp"
 )
 
 var (
@@ -13,6 +15,19 @@ var (
 )
 
 func parseWebP(r io.Reader) (int, int, error) {
+	cfg, err := webp.DecodeConfig(r)
+	if err != nil {
+		if sk, ok := r.(io.Seeker); ok {
+			sk.Seek(0, io.SeekStart)
+			return parseWebPCustom(r)
+		}
+		return 0, 0, err
+	}
+
+	return cfg.Width, cfg.Height, nil
+}
+
+func parseWebPCustom(r io.Reader) (int, int, error) {
 	var width int
 	var height int
 
